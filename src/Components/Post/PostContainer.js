@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
@@ -17,7 +17,20 @@ const PostContainer = ({
 }) => {
   const [isLikedS, setIsLiked] = useState(isLiked);
   const [likeCountS, setLikeCount] = useState(likeCount);
+  const [currentItem, setCurrentItem] = useState(0);
   const comment = useInput("");
+  const slide = useCallback(() => {
+    const totalFiles = files.length;
+    if (currentItem === totalFiles - 1) {
+      setCurrentItem(0);
+    } else {
+      setCurrentItem(currentItem + 1);
+    }
+  }, [currentItem, files]);
+  useEffect(() => {
+    setTimeout(slide, 3000);
+  }, [currentItem, slide]); // currentItem이 변할 때 다시 동작함.
+
   return (
     <PostPresenter
       user={user}
@@ -31,6 +44,7 @@ const PostContainer = ({
       newComment={comment}
       setIsLiked={setIsLiked}
       setLikeCount={setLikeCount}
+      currentItem={currentItem}
     />
   );
 };
