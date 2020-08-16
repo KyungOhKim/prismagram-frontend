@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
+import { useMutation } from "react-apollo-hooks";
+import { TOGGLE_LIKE, ADD_COMMENT } from "./PostQueries";
 
 //proptypes를 정해야 하기 때문에 export default 안하고 const로 만듬
 const PostContainer = ({
@@ -19,6 +21,12 @@ const PostContainer = ({
   const [likeCountS, setLikeCount] = useState(likeCount);
   const [currentItem, setCurrentItem] = useState(0);
   const comment = useInput("");
+  const toggleLikeMutation = useMutation(TOGGLE_LIKE, {
+    variables: { postId: id },
+  });
+  const addCommentMutation = useMutation(ADD_COMMENT, {
+    variables: { postId: id, text: comment.value },
+  });
   const slide = useCallback(() => {
     const totalFiles = files.length;
     if (currentItem === totalFiles - 1) {
@@ -30,6 +38,17 @@ const PostContainer = ({
   useEffect(() => {
     setTimeout(slide, 3000);
   }, [currentItem, slide]); // currentItem이 변할 때 다시 동작함.
+
+  const toggleLike = () => {
+    toggleLikeMutation();
+    if (isLikedS === true) {
+      setIsLiked(false);
+      setLikeCount(likeCountS - 1);
+    } else {
+      setIsLiked(true);
+      setLikeCount(likeCountS + 1);
+    }
+  };
 
   return (
     <PostPresenter
@@ -45,6 +64,7 @@ const PostContainer = ({
       setIsLiked={setIsLiked}
       setLikeCount={setLikeCount}
       currentItem={currentItem}
+      toggleLike={toggleLike}
     />
   );
 };
