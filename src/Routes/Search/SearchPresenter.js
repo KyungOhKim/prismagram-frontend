@@ -7,22 +7,22 @@ import UserCard from "../../Components/UserCard";
 import SquarePost from "../../Components/SquarePost";
 
 const Wrapper = styled.div`
-  height: 50vh;
+  min-height: 80vh;
 `;
 
 const Section = styled.div`
   margin-bottom: 50px;
   display: grid;
-  grid-gap: 25px;
-  grid-template-columns: repeat(4, 160px);
+  grid-gap: 15px;
+  grid-template-columns: repeat(4, 220px);
   grid-template-rows: 160px;
   grid-auto-rows: 160px;
 `;
 
 const PostSection = styled(Section)`
   grid-template-columns: repeat(4, 200px);
-  grid-template-rows: 200px;
-  grid-auto-rows: 200px;
+  grid-template-rows: 220px;
+  grid-auto-rows: 220px;
 `;
 
 const SearchPresenter = ({ searchTerm, loading, data }) => {

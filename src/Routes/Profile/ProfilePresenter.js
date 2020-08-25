@@ -6,6 +6,7 @@ import Avatar from "../../Components/Avatar";
 import FatText from "../../Components/FatText";
 import FollowButton from "../../Components/FollowButton";
 import SquarePost from "../../Components/SquarePost";
+import Button from "../../Components/Button";
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -20,7 +21,14 @@ const Header = styled.header`
   margin-bottom: 40px;
 `;
 
-const HeaderColumn = styled.div``;
+const HeaderColumn = styled.div`
+  &:first-child {
+    flex: 1;
+  }
+  &:not(:first-child) {
+    flex: 1.7;
+  }
+`;
 
 const UsernameRow = styled.div`
   display: flex;
@@ -30,6 +38,7 @@ const UsernameRow = styled.div`
 const Username = styled.span`
   font-size: 26px;
   display: block;
+  margin-right: 15px;
 `;
 
 const Counts = styled.ul`
@@ -54,12 +63,13 @@ const Bio = styled.p`
 
 const Posts = styled.div`
   display: grid;
+  grid-gap: 5px;
   grid-template-columns: repeat(4, 200px);
   grid-template-rows: 200px;
   grid-auto-rows: 200px;
 `;
 
-export default ({ loading, data }) => {
+export default ({ loading, data, logOut }) => {
   if (loading === true) {
     return (
       <Wrapper>
@@ -94,7 +104,11 @@ export default ({ loading, data }) => {
           <HeaderColumn>
             <UsernameRow>
               <Username>{username}</Username>{" "}
-              {!isSelf && <FollowButton isFollowing={isFollowing} id={id} />}
+              {isSelf ? (
+                <Button onClick={logOut} text="Log Out" />
+              ) : (
+                <FollowButton isFollowing={isFollowing} id={id} />
+              )}
             </UsernameRow>
             <Counts>
               <Count>
